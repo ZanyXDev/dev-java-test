@@ -27,11 +27,13 @@ ENV ANDROID_HOME /home/developer/android-sdk-linux
 ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 
 RUN mkdir -p ${ANDROID_HOME} && cd ${ANDROID_HOME}
-RUN chown developer:developer ${ANDROID_HOME} 
 RUN wget -c ${ANDROID_SDK_URL}
 RUN unzip -q ${ANDROID_SDK_FILENAME}
-RUN echo y | android update sdk --no-ui -a --filter tools,platform-tools,${ANDROID_API_LEVELS},build-tools-${ANDROID_BUILD_TOOLS_VERSION} --no-https && \
-rm /var/cache/apk/*
+RUN mv tools ${ANDROID_HOME}/tools
+RUN chown -R developer:developer ${ANDROID_HOME} 
+RUN rm ${ANDROID_SDK_FILENAME}
+#RUN echo y | android update sdk --no-ui -a --filter tools,platform-tools,${ANDROID_API_LEVELS},build-tools-${ANDROID_BUILD_TOOLS_VERSION} --no-https && \
+#rm /var/cache/apk/*
 
 #Installs Android Studio
 ENV ANDROID_STUDIO_FILENAME android-studio-ide-145.3537739-linux.zip
