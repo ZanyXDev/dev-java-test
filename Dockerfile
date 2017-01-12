@@ -23,8 +23,8 @@ ENV PERSISTENT_DATA /opt/persistent_data
 #ENV ANDROID_SDK_URL https://dl.google.com/android/repository/${ANDROID_SDK_FILENAME}
 #ENV ANDROID_API_LEVELS android-15,android-16,android-17,android-18,android-19,android-20,android-21 
 #ENV ANDROID_BUILD_TOOLS_VERSION 21.1.0
-#ENV ANDROID_HOME /home/developer/android-sdk-linux
-#ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
+ENV ANDROID_HOME /home/developer/android-sdk-linux
+ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 
 #RUN mkdir -p ${ANDROID_HOME} && cd ${ANDROID_HOME} && \
 #     wget -c ${ANDROID_SDK_URL} && \
@@ -33,26 +33,23 @@ ENV PERSISTENT_DATA /opt/persistent_data
 #RUN mv tools ${ANDROID_HOME}/tools
 #RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) \
 #    | android update sdk --no-ui --filter platform-tool ${ANDROID_API_LEVELS},build-tools-${ANDROID_BUILD_TOOLS_VERSION} --no-https
-
-RUN chown -R developer:developer ${ANDROID_HOME} 
+#RUN chown -R developer:developer ${ANDROID_HOME} 
 
 #Installs Android Studio
 ENV ANDROID_STUDIO_FILENAME android-studio-ide-145.3537739-linux.zip
 ENV ANDROID_STUDIO_URL https://dl.google.com/dl/android/studio/ide-zips/2.2.3.0/${ANDROID_STUDIO_FILENAME}
 ENV ANDROID_STUDIO_HOME /home/developer/android-studio
 
-RUN mkdir -p ${ANDROID_STUDIO_HOME} && cd ${ANDROID_STUDIO_HOME} && \ 
+RUN mkdir -p ${ANDROID_STUDIO_HOME} && \ 
     wget -q ${ANDROID_STUDIO_URL} && \
-    unzip -q ${ANDROID_STUDIO_FILENAME} && \
-    rm -f  ${ANDROID_STUDIO_FILENAME}
-#RUN mv android-studio ${ANDROID_STUDIO_HOME}
-RUN chown -R developer:developer ${ANDROID_STUDIO_HOME} 
-
+    unzip -q ${ANDROID_STUDIO_FILENAME} -d  /home/developer && \
+    rm -f  ${ANDROID_STUDIO_FILENAME}&& \
+    chown -R developer:developer ${ANDROID_STUDIO_HOME} 
 # ------------------------------------------------------
-
-
-ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 USER developer
+
 ENV HOME /home/developer
-#CMD ${ANDROID_STUDIO_HOME}/bin/studio.sh
-CMD /bin/bash
+
+CMD ${ANDROID_STUDIO_HOME}/bin/studio.sh
+
+#CMD /bin/bash
