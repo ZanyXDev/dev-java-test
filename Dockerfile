@@ -1,6 +1,6 @@
 FROM zanyxdev/dev-java-tools:latest
 
-RUN apt-get update && apt-get install -y sudo git
+RUN apt-get update && apt-get install -y sudo git apt-utils unzip
 
 
 # Replace 1000 with your user / group id
@@ -15,7 +15,7 @@ RUN export uid=1000 gid=1000 && \
 # ------------------------------------------------------
 # --- Download Android SDK tools into $ANDROID_HOME
 ENV PERSISTENT_DATA /opt/persistent_data
-RUN dpkg --get-selections > ${PERSISTENT_DATA}/package.list
+RUN mkdir -p ${PERSISTENT_DATA} && dpkg --get-selections > ${PERSISTENT_DATA}/package.list
 
 # Installs Android SDK
 ENV ANDROID_SDK_FILENAME tools_r25.2.3-linux.zip
