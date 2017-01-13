@@ -21,9 +21,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
     dpkg --add-architecture i386 && \
     add-apt-repository ppa:openjdk-r/ppa -y &&\
     apt-get update && \
-    apt-get install -y --no-install-recommends \
-        software-properties-common \
-	openjdk-8-jdk \
+    apt-get install -y --no-install-recommends openjdk-8-jdk \
 	sudo \
 	git \
 	unzip \
@@ -39,8 +37,11 @@ RUN DEBIAN_FRONTEND=noninteractive \
 #Need for android emulator
 	libqt5widgets5 && \
 
+# Make info file about this build
+    printf "Build of zanyxdev/dev-java:openjdk-8-jdk, date: %s\n"  `date -u +"%Y-%m-%dT%H:%M:%SZ"` > /etc/BUILDS/java && \
+
 # fix default setting
-ln -s java-8-openjdk-amd64 /usr/lib/jvm/default-jvm
+ln -s java-8-openjdk-amd64 /usr/lib/jvm/default-jvm && \
 
 # Replace 1000 with your user / group id
 RUN export uid=1000 gid=1000 && \
@@ -67,7 +68,4 @@ RUN mkdir -p ${ANDROID_STUDIO_HOME}  && \
 # ------------------------------------------------------
 
 # Clean up APT when done.
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
-
-# Make info file about this build
-    printf "Build of zanyxdev/dev-java:openjdk-8-jdk, date: %s\n"  `date -u +"%Y-%m-%dT%H:%M:%SZ"` > /var/log/java_install
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
