@@ -27,6 +27,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
 	sudo \
 	git \
 	unzip \
+	wget \
 #Need for ANdroid studio
 	libxtst6:i386 \
 	libc6:i386 \
@@ -50,6 +51,20 @@ RUN export uid=1000 gid=1000 && \
     chmod 0440 /etc/sudoers.d/developer && \
     chown ${uid}:${gid} -R /home/developer
 
+USER developer
+ENV HOME /home/developer
+
+#Installs Android Studio
+ENV ANDROID_STUDIO_FILENAME android-studio-ide-145.3537739-linux.zip
+ENV ANDROID_STUDIO_URL https://dl.google.com/dl/android/studio/ide-zips/2.2.3.0/${ANDROID_STUDIO_FILENAME}
+ENV ANDROID_STUDIO_HOME /home/developer/android-studio
+
+RUN mkdir -p ${ANDROID_STUDIO_HOME}  && \
+    wget -q ${ANDROID_STUDIO_URL} && \
+    unzip -q ${ANDROID_STUDIO_FILENAME} -d  /home/developer && \
+    rm -f  ${ANDROID_STUDIO_FILENAME}&& \
+    chown -R developer:developer ${ANDROID_STUDIO_HOME} 
+# ------------------------------------------------------
 
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
