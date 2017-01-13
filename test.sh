@@ -16,7 +16,6 @@ docker run -ti \
     -e XAUTHORITY=$XAUTH \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
     -v /dev/bus/usb:/dev/bus/usb \
+    -v ~/persistent_data:/opt/persistent_data \
+    -v ~/.android-studio-docker:/home/developer/.AndroidStudio2.2 \
     dev-test
-#    -v ~/persistent_data:/opt/persistent_data \
-
-
