@@ -9,7 +9,7 @@ echo "Building $XAUTH"
 touch $XAUTH
 xauth nlist :0 | sed -e 's/^..../ffff/' | xauth -f $XAUTH nmerge -
 
-docker run -it --rm \
+docker run -ti \
     --privileged \
     --net=host \
     -e DISPLAY=unix$DISPLAY \
@@ -18,6 +18,4 @@ docker run -it --rm \
     -v /dev/bus/usb:/dev/bus/usb \
     -v ~/persistent_data:/opt/persistent_data \
     -v ~/.android-studio-docker:/home/developer/.AndroidStudio2.2 \
-    zanyxdev/dev/java-test
-
-
+    dev-test
