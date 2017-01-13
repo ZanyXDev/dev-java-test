@@ -19,7 +19,7 @@ PATH=${PATH}:/usr/lib/jvm/default-jvm/bin/
 
 RUN DEBIAN_FRONTEND=noninteractive \
     dpkg --add-architecture i386 && \
-    add-apt-repository ppa:openjdk-r/ppa -y \
+    add-apt-repository ppa:openjdk-r/ppa -y &&\
     apt-get update && \
     apt-get install -y -no-install-recommends openjdk-8-jdk \
 	sudo \
