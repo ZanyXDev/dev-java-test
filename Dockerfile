@@ -11,19 +11,22 @@ RUN dpkg --add-architecture i386 \
 	libstdc++6:i386 \
 	zlib1g:i386 \
 	libncurses5:i386 \
-	ant \
-	maven \
 	curl \
+	sudo \
 	unzip \
 	openjdk-8-jdk \
 	ca-certificates-java \
     && apt-get clean \
     && apt-get autoremove \
     && rm -rf /var/lib/apt/lists/*
+# fix default setting
+#ln -s java-8-openjdk-amd64 /usr/lib/jvm/default-jvm
 
-ENV GRADLE_URL http://services.gradle.org/distributions/gradle-3.3-all.zip
-RUN curl -L ${GRADLE_URL} -o /tmp/gradle-3.3-all.zip && unzip /tmp/gradle-3.3-all.zip -d /usr/local && rm /tmp/gradle-3.3-all.zip
-ENV GRADLE_HOME /usr/local/gradle-3.3
+#set Russian locale
+ENV LC_ALL ru_RU.UTF-8 
+ENV LANG ru_RU.UTF-8 
+ENV LANGUAGE ru_RU.UTF-8 
+#RUN locale-gen ru_RU.UTF-8
 
 # Development user
 RUN echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers \
@@ -37,8 +40,13 @@ RUN mkdir -m 700 /data && \
     mkdir -m 700 $HOME/AndroidStudioProjects && \
     chown -R developer:developer /data $HOME/.AndroidStudio2.2 $HOME/AndroidStudioProjects
 
+ENV GRADLE_URL http://services.gradle.org/distributions/gradle-3.3-all.zip
+RUN curl -L ${GRADLE_URL} -o /tmp/gradle-3.3-all.zip && unzip /tmp/gradle-3.3-all.zip -d /usr/local && rm /tmp/gradle-3.3-all.zip
+
 # Set things up using the dev user and reduce the need for `chown`s
 USER developer
+
+ENV GRADLE_HOME /usr/local/gradle-3.3
 
 #Installs Android SDK
 RUN curl -L https://dl.google.com/android/repository/tools_r25.2.3-linux.zip -o /tmp/tools_r25.2.3-linux.zip \
@@ -72,6 +80,9 @@ RUN echo y | android update sdk --all --no-ui --force --filter android-21
 RUN echo y | android update sdk --all --no-ui --force --filter build-tools-21.1.2
 
 WORKDIR /home/developer/
+
+# Make info file about this build
+# printf "Build of zanyxdev/dev-java:0.1, date: %s\n"  `date -u +"%Y-%m-%dT%H:%M:%SZ"` > /var/log/java_install
 
 CMD /home/developer/android-studio/bin/studio.sh
 
