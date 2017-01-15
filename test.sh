@@ -1,21 +1,12 @@
 #!/bin/bash
-USER=`whoami`
-
-mkdir -p ~/persistent_data/
-chown -R $USER:$USER ~/persistent_data/
-
-XAUTH=~/persistent_data/.docker.xauth
-echo "Building $XAUTH"
-touch $XAUTH
-xauth nlist :0 | sed -e 's/^..../ffff/' | xauth -f $XAUTH nmerge -
-
-docker run -ti \
-    --privileged \
+docker run -it \
+    --rm \
+    -e DISPLAY \
     --net=host \
-    -e DISPLAY=unix$DISPLAY \
-    -e XAUTHORITY=$XAUTH \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
     -v /dev/bus/usb:/dev/bus/usb \
-    -v ~/persistent_data:/opt/persistent_data \
-    -v ~/.android-studio-docker:/home/developer/.AndroidStudio2.2 \
-    dev-test
+    -v $HOME/.Xauthority:/home/developer/.Xauthority \
+    -v $HOME/.AndroidStudio2.2:/home/developer/.AndroidStudio2.2 \
+    -v $HOME/AndroidStudioProjects:/home/developer/AndroidStuioProjects \
+    -v $HOME/persistent_data:/home/developer/data \
+    test
