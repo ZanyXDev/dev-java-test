@@ -45,9 +45,9 @@ RUN mkdir -m 700 /data && \
 USER developer
 
 #Installs Android SDK
-RUN curl -L https://dl.google.com/android/repository/tools_r25.2.3-linux.zip -o /tmp/tools_r25.2.3-linux.zip \
-    && unzip /tmp/tools_r25.2.3-linux.zip -d /home/developer/android-sdk-linux \
-    && rm -f /tmp/tools_r25.2.3-linux.zip
+#RUN curl -L https://dl.google.com/android/repository/tools_r25.2.3-linux.zip -o /tmp/tools_r25.2.3-linux.zip \
+#    && unzip /tmp/tools_r25.2.3-linux.zip -d /home/developer/android-sdk-linux \
+#    && rm -f /tmp/tools_r25.2.3-linux.zip
 
 #Installs Android Studio
 ENV ANDROID_STUDIO_FILENAME android-studio-ide-145.3537739-linux.zip
