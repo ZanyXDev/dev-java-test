@@ -9,4 +9,4 @@ docker run -it \
     -v $HOME/.AndroidStudio2.2:/home/developer/.AndroidStudio2.2 \
     -v $HOME/AndroidStudioProjects:/home/developer/AndroidStuioProjects \
     -v $HOME/persistent_data:/home/developer/data \
-    test
+    zanyxdev/dev-java-test:0.1
